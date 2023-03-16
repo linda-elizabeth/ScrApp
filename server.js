@@ -13,7 +13,7 @@ const port = process.env.PORT || 5000;
 // for scraping
 const axios = require("axios");
 const cheerio = require("cheerio");
-const pretty = require("pretty");
+
 const textVersion = require("textversionjs");
 
 // to use database
@@ -94,7 +94,6 @@ app.post("/add", async function (req, res) {
     .each(function (index, element) {
       links.push($(element).attr("href"));
     });
-  console.log("Links=", links);
 
   // saving insights to database
   var searchItem = {
