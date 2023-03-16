@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="https://kit.fontawesome.com/dc9d2a171b.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <h3 class="mt-4 text-center">Results</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th class="col-sm-2" scope="col">Domain name</th>
+          <th class="col-sm-2" scope="col">Word Count</th>
+          <th class="col-sm-2" scope="col">Favourite</th>
+          <th class="col-sm-4" scope="col">Web Links</th>
+          <th class="col-sm-1" scope="col">Heart</th>
+          <th class="col-sm-1" scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%for(i=0;i<items.length;i++){%>
+        <tr>
+          <td class="col-sm-2"><%=items[i].domainName%></th>
+          <td class="col-sm-2"><%=items[i].wordCount%></td>
+          <td class="col-sm-2"><%=items[i].favourite%></td>
+          <td class="col-sm-4">
+            <ul>
+              <%for(j=0;j<items[i].webLinks.length;j++){%>
+                <a href="<%=items[i].webLinks[j]%>"><li><%=items[i].webLinks[j]%></li></a>
+              <%}%>
+            </ul>
+          </td>
+          <td class="col-sm-1"><a href="/update/<%=items[i]._id%>"><i class="fa fa-heart-o"></i></a></td>
+          <td class="col-sm-1"><a href="/delete/<%=items[i]._id%>"><i class="fa fa-trash-o"></i></a></td>
+        </tr>
+        <%}%>
+      </tbody>
+    </table>
+    <script
+      src="https://kit.fontawesome.com/dc9d2a171b.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

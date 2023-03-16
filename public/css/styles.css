@@ -1,0 +1,12 @@
+.main {
+  width: 50%;
+  margin: 50px auto;
+}
+
+/* Bootstrap 4 text input with search icon */
+.text-center {
+  margin: 10%;
+}
+.fa {
+  color: gray;
+}
