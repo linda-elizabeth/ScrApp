@@ -13,7 +13,6 @@ const port = process.env.PORT || 5000;
 // for scraping
 const axios = require("axios");
 const cheerio = require("cheerio");
-
 const textVersion = require("textversionjs");
 
 // to use database
@@ -38,24 +37,40 @@ app.post("/add", async function (req, res) {
   const { data } = await axios.get(req.body.domainname);
   const $ = cheerio.load(data);
   var plainText = textVersion($.html());
-
   // counting words
   var wdcnt = 0;
   var wd = "";
+  // console.log(plainText.match(/\S+/g));
   for (let i = 0; i < plainText.length; i++) {
-    if (plainText[i] == "[" || plainText == "]") {
+    if (plainText[i] == "[" || plainText[i] == "]") {
+      // if text on link skip brackets and get to the word
       continue;
     }
     if (plainText[i] == "(") {
+      // if link url skip entirely
       i = plainText.indexOf(")", i) + 1;
     }
     if (plainText[i] == "<") {
+      // if html tags skip entirely
       i = plainText.indexOf(">", i) + 1;
     }
     if (plainText[i] == " ") {
-      if (wd == " " || wd == "") {
+      // if reached the end of a word
+
+      wd = wd.trim();
+      if (wd == "") {
+        // if word is null, do not count
         continue;
       }
+      if (/^\d+$/.test(wd)) {
+        // if word contains only digits
+        continue;
+      }
+      // if (/[`!@#$%^&*()_+\-={};':"\\|,.\/?~]/.test(wd)) {
+      //   // if word contains special characters
+      //   console.log(wd);
+      //   continue;
+      // }
       if (
         wd == "!" ||
         wd == "@" ||
@@ -77,14 +92,18 @@ app.post("/add", async function (req, res) {
         wd == "/" ||
         wd == "?" ||
         wd == "~" ||
-        wd == "©"
+        wd == "©" ||
+        wd == "»"
       ) {
+        // if word is special character, do not count
         continue;
       }
+      // if all inner conditions fail, it is a word
       console.log("word=", wd);
       wdcnt += 1;
       wd = "";
     } else {
+      // if no condition satisfies, it is a letter of a word
       wd += plainText[i];
     }
   }
@@ -95,7 +114,10 @@ app.post("/add", async function (req, res) {
   $("body")
     .find("a")
     .each(function (index, element) {
-      links.push($(element).attr("href"));
+      if (!links.includes($(element).attr("href"))) {
+        // if link is not already present in the array, append
+        links.push($(element).attr("href"));
+      }
     });
 
   // saving insights to database
