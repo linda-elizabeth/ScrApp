@@ -17,6 +17,9 @@ const cheerio = require("cheerio");
 const textVersion = require("textversionjs");
 
 // to use database
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "./.env") });
+
 const searchdata = require("./src/models/SearchData");
 
 // setting template engine as ejs
